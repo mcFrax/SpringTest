@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = SpringTest
 TEMPLATE = app
 
-QMAKE_CXXFLAGS+=--std=gnu++11
+QMAKE_CXXFLAGS+=-std=gnu++0x
 
 SOURCES += main.cpp\
         mainwindow.cpp \
