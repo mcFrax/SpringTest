@@ -21,7 +21,6 @@ const funkcja_liniowa &spring::func_for(strength_t strength) const
         if (i == func_steps_val.end() || i->trigger_strength < strength)
             return (--i)->next_len_func;
     }
-    throw "UR stupid bastard";
 }
 
 const step& spring::next_step_after(strength_t strength) const
@@ -66,6 +65,19 @@ void spring::make_steps()
     } else {
         func_steps_val.push_back(step(opt_func.arg_for(min_len_val), funkcja_liniowa(0, min_len_val)));
     }
+
+    for (unsigned i = 0; i < func_steps_val.size()-1;){
+        if (func_steps_val[i].trigger_strength == func_steps_val[i+1].trigger_strength ){
+            func_steps_val.erase(func_steps_val.begin()+i);
+        } else {
+             ++i;
+        }
+    }
+
+    func_steps_val[0].prev_len_func = funkcja_liniowa();
+    for (unsigned i = 1; i < func_steps_val.size(); ++i)
+        func_steps_val[i].prev_len_func = func_steps_val[i-1].next_len_func;
+
 
     //printing:
     for (auto i = func_steps_val.begin(); i != func_steps_val.end(); ++i){

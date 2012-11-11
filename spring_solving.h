@@ -37,8 +37,12 @@ strength_t solve_internal(const SpringList& springs, length_t desired_len)
     }
 
     while (!event_queue.empty() && event_queue.begin()->step.trigger_strength > -INFINITY){
+        std::cerr << "plof " << summary_len(event_queue.begin()->step.trigger_strength) << '\n';
         if (summary_len(event_queue.begin()->step.trigger_strength) <= desired_len){
             strength = summary_len.arg_for(desired_len);
+            std::cerr << "breaking: " << desired_len << ' ' << summary_len(event_queue.begin()->step.trigger_strength)
+                      << ' ' << event_queue.begin()->step.trigger_strength << ' ' << strength << ' ' << summary_len.a
+                      << ',' << summary_len.b << '\n';
             break;
         }
         const spring& event_trigger = event_queue.begin()->spring;
@@ -50,18 +54,12 @@ strength_t solve_internal(const SpringList& springs, length_t desired_len)
             ++iii;
         }
 
-        std::cerr << "et:"<< spring_num<<'('<<&(event_queue.begin()->spring) << ") st:" << event_queue.begin()->step.trigger_strength << std::endl;
-        std::cerr << "next trigger:"<< event_trigger.next_step_after(event_queue.begin()->step.trigger_strength).trigger_strength << std::endl;
-
-        std::cerr << "funcs:\n";
-        std::cerr << "summary_len["<< summary_len.a <<", "<< summary_len.b <<"] -= event_trigger.func_for(strength)["
-                  << event_trigger.func_for(strength).a <<", "<< event_trigger.func_for(strength).b <<"];\n";
-        summary_len -= event_trigger.func_for(strength);
+        summary_len -= event_queue.begin()->step.prev_len_func;
         strength = event_queue.begin()->step.trigger_strength;
 
-        std::cerr << "summary_len["<< summary_len.a <<", "<< summary_len.b <<"] += event_trigger.func_for(strength)["
-                  << event_trigger.func_for(strength).a <<", "<< event_trigger.func_for(strength).b <<"];\n";
-        summary_len += event_trigger.func_for(strength);
+//        std::cerr << "summary_len["<< summary_len.a <<", "<< summary_len.b <<"] += event_trigger.func_for("<<strength<<")["
+//                  << event_trigger.func_for(strength).a <<", "<< event_trigger.func_for(strength).b <<"];\n";
+        summary_len += event_queue.begin()->step.next_len_func;
         event_queue.erase(event_queue.begin());
         event_queue.insert(event_t(event_trigger.next_step_after(strength), event_trigger));
     }
