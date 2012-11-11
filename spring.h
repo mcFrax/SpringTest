@@ -1,7 +1,7 @@
 #ifndef SPRING_H
 #define SPRING_H
 
-#include <list>
+#include <vector>
 #include <cmath>
 #include "basics.h"
 
@@ -16,7 +16,7 @@ struct step
     }
 };
 
-typedef std::list<step> step_list_t;
+typedef std::vector<step> step_list_t;
 
 class spring
 {
@@ -32,10 +32,10 @@ public:
     length_t length(strength_t strength) const; //inefficient, & that ain't gonna change
     strength_t strength(length_t length) const; //even more inefficient, & that ain't gonna change too
     strength_factor_t strength_factor(length_t length) const;
-    //const step& next_step(strength_t strength);
-    //const step& next_step(length_t length);
-    const step& next_step_after(strength_t strength);
-    //const step& next_step_after(length_t length);
+    //const step& next_step(strength_t strength) const;
+    //const step& next_step(length_t length) const;
+    const step& next_step_after(strength_t strength) const;
+    //const step& next_step_after(length_t length) const;
     const step_list_t& func_steps() const;
     const funkcja_liniowa& func_for(strength_t strength) const;
 

@@ -23,7 +23,7 @@ const funkcja_liniowa &spring::func_for(strength_t strength) const
     throw "UR stupid bastard";
 }
 
-const step& spring::next_step_after(strength_t strength)
+const step& spring::next_step_after(strength_t strength) const
 {
     for (auto i = func_steps_val.begin(); i != func_steps_val.end(); ++i){
         if (i->trigger_strength < strength)
@@ -37,6 +37,9 @@ length_t spring::length(strength_t strength) const
 {
     return func_for(strength)(strength);
 }
+
+//600   20 75 0   15 50 0   30 50 0   20 50 80    20 50 0   45 50 0   20 35 0    2 20 15   20 110 0   20 50 0   20 50 0
+//przy zmniejszeniu sie sypie
 
 void spring::make_steps()
 {
