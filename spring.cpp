@@ -1,5 +1,6 @@
 #include "spring.h"
 #include <cmath>
+#include <iostream>
 
 using namespace std;
 
@@ -64,6 +65,19 @@ void spring::make_steps()
         func_steps_val.push_back(step(squeezing_func.arg_for(min_len_val), funkcja_liniowa(0, min_len_val)));
     } else {
         func_steps_val.push_back(step(opt_func.arg_for(min_len_val), funkcja_liniowa(0, min_len_val)));
+    }
+
+    //printing:
+    for (auto i = func_steps_val.begin(); i != func_steps_val.end(); ++i){
+        cerr << i->trigger_strength << ':' << i->next_len_func(i->trigger_strength) << '('<<i->next_len_func.a<<','<<i->next_len_func.b<<") ";
+    }
+    cerr << endl;
+
+    //checking integrity:
+    for (auto i = ++func_steps_val.begin(); i != func_steps_val.end(); ++i){
+        auto prev = i; --prev;
+        if (prev->next_len_func(i->trigger_strength) != i->next_len_func(i->trigger_strength))
+            cerr << "make_steps check failed: " << prev->next_len_func(i->trigger_strength) - i->next_len_func(i->trigger_strength) << endl;
     }
 }
 

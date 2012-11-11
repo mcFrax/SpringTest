@@ -35,20 +35,21 @@ void MainWindow::on_newObjectButton_clicked()
 
 void MainWindow::redrawSprings()
 {
-    cerr << "redrawSprings()" << endl;
+//    cerr << "redrawSprings()" << endl;
     if (scene) delete scene;
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
     int desired_len = overall_length;
 
-    cerr << springs.size() << endl;
-    for (auto i = springs.begin(); i != springs.end(); ++i)
-        cerr << i->opt_len() << ' ' << i->min_len() << ' ' << i->min_len_good_looking() << ' ' << endl;
+//    cerr << springs.size() << endl;
+//    for (auto i = springs.begin(); i != springs.end(); ++i)
+//        cerr << i->opt_len() << ' ' << i->min_len() << ' ' << i->min_len_good_looking() << ' ' << endl;
 
     if (springs.empty()) return;
 
-    vector<length_t> wynik = solve(springs, desired_len);
+    strength_t strength;
+    vector<length_t> wynik = solve(springs, desired_len, &strength);
 
     length_t from_beg = 0;
 
@@ -71,6 +72,8 @@ void MainWindow::redrawSprings()
         from_beg += wynik[i];
     }
     scene->addRect(from_beg, 0, 1, box_height);
+
+    ui->strengthLabel->setText(QString("Strength: ")+QString::number(strength, 'f', 3));
 }
 
 void MainWindow::springControllerDeleted(spring &spring)

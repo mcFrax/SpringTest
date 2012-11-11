@@ -57,6 +57,13 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QLabel" name="strengthLabel">
+             <property name="text">
+              <string>Strength: 0</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
