@@ -29,11 +29,14 @@ private slots:
 
     void on_widthSlider_valueChanged(int);
 
+    void on_textInputButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene* scene;
     QList<spring> springs;
     double overall_length;
+    void addSpringController(const spring& s = spring());
 };
 
 #endif // MAINWINDOW_H

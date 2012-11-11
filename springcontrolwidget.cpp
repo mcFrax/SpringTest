@@ -7,6 +7,9 @@ SpringControlWidget::SpringControlWidget(QWidget *parent, spring& spring) :
     connected_spring(spring)
 {
     ui->setupUi(this);
+    ui->spinBox->setValue(connected_spring.min_len());
+    ui->spinBox_2->setValue(connected_spring.opt_len());
+    ui->spinBox_3->setValue(connected_spring.min_len_good_looking());
 }
 
 SpringControlWidget::~SpringControlWidget()

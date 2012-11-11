@@ -9,6 +9,7 @@
 #include <QColor>
 #include <QString>
 #include <iostream>
+#include <QInputDialog>
 #include "springcontrolwidget.h"
 
 using namespace std;
@@ -28,12 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_newObjectButton_clicked()
 {
-    springs.push_back(spring());
-    SpringControlWidget *spc = new SpringControlWidget(this, springs.back());
-    ui->verticalLayout_3->insertWidget(ui->verticalLayout_3->count()-1, spc);
-
-    connect(spc, SIGNAL(springChanged(spring&)), this, SLOT(redrawSprings()));
-    connect(spc, SIGNAL(springControllerDeleted(spring&)), this, SLOT(springControllerDeleted(spring&)));
+    addSpringController();
     redrawSprings();
 }
 
@@ -107,4 +103,35 @@ void MainWindow::on_widthEdit_editingFinished()
 void MainWindow::on_widthSlider_valueChanged(int)
 {
     on_widthEdit_editingFinished();
+}
+
+void MainWindow::on_textInputButton_clicked()
+{
+    stringstream str;
+    for (auto i = springs.begin(); i != springs.end(); ++i)
+        str << i->min_len() << ' ' << i->opt_len() << ' ' << i->min_len_good_looking() << ' ';
+    QString input = QInputDialog::getText(this, tr("Input"), tr("input"),
+                                          QLineEdit::Normal, QString::fromStdString(str.str()));
+    if (input.isNull()) return;
+
+    while (ui->verticalLayout_3->count() > 1)
+        ui->verticalLayout_3->removeItem(ui->verticalLayout_3->itemAt(0));
+
+    stringstream str2(input.toStdString());
+    double min_len, opt_len, mgl;
+    while (str2 >> min_len >> opt_len >> mgl){
+        addSpringController(spring(opt_len, min_len, mgl));
+    }
+
+    redrawSprings();
+}
+
+void MainWindow::addSpringController(const spring &s)
+{
+    springs.push_back(s);
+    SpringControlWidget *spc = new SpringControlWidget(this, springs.back());
+    ui->verticalLayout_3->insertWidget(ui->verticalLayout_3->count()-1, spc);
+
+    connect(spc, SIGNAL(springChanged(spring&)), this, SLOT(redrawSprings()));
+    connect(spc, SIGNAL(springControllerDeleted(spring&)), this, SLOT(springControllerDeleted(spring&)));
 }

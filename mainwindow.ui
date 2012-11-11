@@ -81,7 +81,7 @@
              <x>0</x>
              <y>0</y>
              <width>126</width>
-             <height>232</height>
+             <height>199</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -93,7 +93,7 @@
               <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>211</height>
+                <height>178</height>
                </size>
               </property>
              </spacer>
@@ -106,6 +106,13 @@
          <widget class="QPushButton" name="newObjectButton">
           <property name="text">
            <string>Dodaj</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="textInputButton">
+          <property name="text">
+           <string>Input by palec</string>
           </property>
          </widget>
         </item>
