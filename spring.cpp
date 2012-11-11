@@ -1,6 +1,5 @@
 #include "spring.h"
 #include <cmath>
-#include <iostream>
 
 using namespace std;
 
@@ -39,9 +38,6 @@ length_t spring::length(strength_t strength) const
     return func_for(strength)(strength);
 }
 
-//600   20 75 0   15 50 0   30 50 0   20 50 80    20 50 0   45 50 0   20 35 0    2 20 15   20 110 0   20 50 0   20 50 0
-//przy zmniejszeniu sie sypie
-
 void spring::make_steps()
 {
     if (min_len_good_looking_val < min_len_val){
@@ -65,19 +61,6 @@ void spring::make_steps()
         func_steps_val.push_back(step(squeezing_func.arg_for(min_len_val), funkcja_liniowa(0, min_len_val)));
     } else {
         func_steps_val.push_back(step(opt_func.arg_for(min_len_val), funkcja_liniowa(0, min_len_val)));
-    }
-
-    //printing:
-    for (auto i = func_steps_val.begin(); i != func_steps_val.end(); ++i){
-        cerr << i->trigger_strength << ':' << i->next_len_func(i->trigger_strength) << '('<<i->next_len_func.a<<','<<i->next_len_func.b<<") ";
-    }
-    cerr << endl;
-
-    //checking integrity:
-    for (auto i = ++func_steps_val.begin(); i != func_steps_val.end(); ++i){
-        auto prev = i; --prev;
-        if (prev->next_len_func(i->trigger_strength) != i->next_len_func(i->trigger_strength))
-            cerr << "make_steps check failed: " << prev->next_len_func(i->trigger_strength) - i->next_len_func(i->trigger_strength) << endl;
     }
 }
 

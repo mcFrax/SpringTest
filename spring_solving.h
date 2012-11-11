@@ -3,7 +3,6 @@
 
 #include <set>
 #include <cmath>
-#include <iostream>
 #include "spring.h"
 
 struct event_t
@@ -25,7 +24,6 @@ struct event_t
 template <class SpringList>
 strength_t solve_internal(const SpringList& springs, length_t desired_len)
 {
-    std::cerr << "\n\nsolve_internal()\n";
     std::set<event_t> event_queue;
     strength_t strength = INFINITY;
 
@@ -43,24 +41,9 @@ strength_t solve_internal(const SpringList& springs, length_t desired_len)
         }
         const spring& event_trigger = event_queue.begin()->spring;
 
-        int spring_num = -1;
-        int iii = 0;
-        for (auto i = springs.begin(); i != springs.end(); ++i){
-            if (&(*i) == &(event_queue.begin()->spring)) spring_num = iii;
-            ++iii;
-        }
-
-        std::cerr << "et:"<< spring_num<<'('<<&(event_queue.begin()->spring) << ") st:" << event_queue.begin()->step.trigger_strength << std::endl;
-        std::cerr << "next trigger:"<< event_trigger.next_step_after(event_queue.begin()->step.trigger_strength).trigger_strength << std::endl;
-
-        std::cerr << "funcs:\n";
-        std::cerr << "summary_len["<< summary_len.a <<", "<< summary_len.b <<"] -= event_trigger.func_for(strength)["
-                  << event_trigger.func_for(strength).a <<", "<< event_trigger.func_for(strength).b <<"];\n";
         summary_len -= event_trigger.func_for(strength);
         strength = event_queue.begin()->step.trigger_strength;
 
-        std::cerr << "summary_len["<< summary_len.a <<", "<< summary_len.b <<"] += event_trigger.func_for(strength)["
-                  << event_trigger.func_for(strength).a <<", "<< event_trigger.func_for(strength).b <<"];\n";
         summary_len += event_trigger.func_for(strength);
         event_queue.erase(event_queue.begin());
         event_queue.insert(event_t(event_trigger.next_step_after(strength), event_trigger));
