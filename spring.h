@@ -9,9 +9,11 @@ struct step
 {
     strength_t trigger_strength;
     funkcja_liniowa next_len_func;
-    step(strength_t trigger_strength, funkcja_liniowa next_len_func = funkcja_liniowa())
+    funkcja_liniowa prev_len_func;
+    step(strength_t trigger_strength, funkcja_liniowa next_len_func = funkcja_liniowa(), funkcja_liniowa prev_len_func = funkcja_liniowa())
         : trigger_strength(trigger_strength),
-          next_len_func(next_len_func)
+          next_len_func(next_len_func),
+          prev_len_func(prev_len_func)
     {
     }
 };

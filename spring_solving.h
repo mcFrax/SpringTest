@@ -41,10 +41,11 @@ strength_t solve_internal(const SpringList& springs, length_t desired_len)
         }
         const spring& event_trigger = event_queue.begin()->spring;
 
-        summary_len -= event_trigger.func_for(strength);
+        summary_len -= event_queue.begin()->step.prev_len_func;
         strength = event_queue.begin()->step.trigger_strength;
 
-        summary_len += event_trigger.func_for(strength);
+        summary_len += event_queue.begin()->step.next_len_func;
+
         event_queue.erase(event_queue.begin());
         event_queue.insert(event_t(event_trigger.next_step_after(strength), event_trigger));
     }
